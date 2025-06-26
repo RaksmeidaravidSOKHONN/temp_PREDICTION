@@ -1,0 +1,15 @@
+body {
+  background-color: #f5f7fa;
+}
+h1 {
+  font-weight: bold;
+  color: #333;
+}
+form {
+  max-width: 600px;
+  margin: auto;
+}
+.alert {
+  max-width: 600px;
+  margin: auto;
+}

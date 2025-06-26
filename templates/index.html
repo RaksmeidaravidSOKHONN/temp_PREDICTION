@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Temperature Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">🌤️ Temperature Prediction Web</h1>
+
+    <form method="POST" class="p-4 border rounded bg-light shadow">
+      <div class="mb-3">
+        <label for="mode" class="form-label">Choose Prediction Mode:</label>
+        <select class="form-select" id="mode" name="mode" onchange="toggleInputs()">
+          <option value="forward" {% if result.mode == 'forward' %}selected{% endif %}>Temperature ➜ Humidity, Wind Speed, Pressure</option>
+          <option value="reverse" {% if result.mode == 'reverse' %}selected{% endif %}>Humidity, Wind Speed, Pressure ➜ Temperature</option>
+        </select>
+      </div>
+
+      <div id="input-temp" class="mb-3">
+        <label class="form-label">Temperature (°C):</label>
+        <input type="number" step="any" class="form-control" name="temperature" value="{{ result.temperature or '' }}"  required>
+      </div>
+
+      <div id="input-hwp" style="display: none;">
+        <div class="mb-3">
+          <label class="form-label">Humidity (%):</label>
+          <input type="number" step="any" min="0" class="form-control" name="humidity" value="{{ result.humidity or '' }}"  required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Wind Speed (km/h):</label>
+          <input type="number" step="any" min="0" class="form-control" name="wind_speed" value="{{ result.wind_speed or '' }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Pressure (hPa):</label>
+          <input type="number" step="any" min="0" class="form-control" name="pressure" value="{{ result.pressure or '' }}"  required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Predict</button>
+    </form>
+
+    {% if result.temperature is not none %}
+    <div class="mt-4 alert alert-info">
+      <h5>🔍 Prediction Result:</h5>
+      <ul class="list-unstyled">
+        {% if result.mode == 'forward' %}
+          <li><strong>Temperature:</strong> {{ result.temperature }} °C</li>
+          <li><strong>Predicted Humidity:</strong> {{ result.humidity | round(2) }}%</li>
+          <li><strong>Predicted Wind Speed:</strong> {{ result.wind_speed | round(2) }} km/h</li>
+          <li><strong>Predicted Pressure:</strong> {{ result.pressure | round(2) }} hPa</li>
+        {% elif result.mode == 'reverse' %}
+          <li><strong>Humidity:</strong> {{ result.humidity }}%</li>
+          <li><strong>Wind Speed:</strong> {{ result.wind_speed }} km/h</li>
+          <li><strong>Pressure:</strong> {{ result.pressure }} hPa</li>
+          <li><strong>Predicted Temperature:</strong> {{ result.temperature | round(2) }} °C</li>
+        {% endif %}
+      </ul>
+    </div>
+    {% elif result.error %}
+      <div class="alert alert-danger mt-4">{{ result.error }}</div>
+    {% endif %}
+  </div>
+
+  <script>
+    function toggleInputs() {
+      const mode = document.getElementById('mode').value;
+      document.getElementById('input-temp').style.display = (mode === 'forward') ? 'block' : 'none';
+      document.getElementById('input-hwp').style.display = (mode === 'reverse') ? 'block' : 'none';
+    }
+    toggleInputs();
+  </script>
+</body>
+</html>
