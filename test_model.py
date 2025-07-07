@@ -15,7 +15,7 @@ y_test_A = test_data[['humidity', 'wind_speed', 'pressure']]
 
 preds_A = model_A.predict(X_test_A)
 
-print("🧪 Model A (Temp ➜ HWP) Evaluation:")
+print(" Model A (Temp to HWP) Evaluation:")
 print("MSE:", mean_squared_error(y_test_A, preds_A))
 print("R2 Score:", r2_score(y_test_A, preds_A))
 
@@ -27,12 +27,13 @@ y_test_B = test_data[['temperature']]
 
 preds_B = model_B.predict(X_test_B)
 
-print("\n🧪 Model B (HWP ➜ Temp) Evaluation:")
+print("\n Model B (HWP to Temp) Evaluation:")
 print("MSE:", mean_squared_error(y_test_B, preds_B))
 print("R2 Score:", r2_score(y_test_B, preds_B))
 
 
 #Plot Graphs
+
 # Plot Actual vs. Predicted for Model A
 features_A = ['humidity', 'wind_speed', 'pressure']
 for i, feature in enumerate(features_A):

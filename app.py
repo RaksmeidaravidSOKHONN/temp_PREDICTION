@@ -37,7 +37,7 @@ def index():
                 result['temperature'] = float(prediction)
 
         except Exception as e:
-            result['error'] = f"⚠️ Error in input: {str(e)}"
+            result['error'] = f" Error in input: {str(e)}"
 
     return render_template("index.html", result=result)
 

@@ -10,7 +10,7 @@
   <div class="container mt-5">
     <h1 class="text-center mb-4">🌤️ Temperature Prediction Web</h1>
 
-    <form method="POST" class="p-4 border rounded bg-light shadow">
+    <form method="POST">
       <div class="mb-3">
         <label for="mode" class="form-label">Choose Prediction Mode:</label>
         <select class="form-select" id="mode" name="mode" onchange="toggleInputs()">
@@ -21,13 +21,13 @@
 
       <div id="input-temp" class="mb-3">
         <label class="form-label">Temperature (°C):</label>
-        <input type="number" step="any" class="form-control" name="temperature" value="{{ result.temperature or '' }}"  required>
+        <input type="number" step="any" class="form-control" name="temperature" value="{{ result.temperature or '' }}" required>
       </div>
 
       <div id="input-hwp" style="display: none;">
         <div class="mb-3">
           <label class="form-label">Humidity (%):</label>
-          <input type="number" step="any" min="0" class="form-control" name="humidity" value="{{ result.humidity or '' }}"  required>
+          <input type="number" step="any" min="0" class="form-control" name="humidity" value="{{ result.humidity or '' }}" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Wind Speed (km/h):</label>
@@ -35,28 +35,108 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Pressure (hPa):</label>
-          <input type="number" step="any" min="0" class="form-control" name="pressure" value="{{ result.pressure or '' }}"  required>
+          <input type="number" step="any" min="0" class="form-control" name="pressure" value="{{ result.pressure or '' }}" required>
         </div>
       </div>
 
       <button type="submit" class="btn btn-primary w-100">Predict</button>
     </form>
 
-    {% if result.temperature is not none %}
-    <div class="mt-4 alert alert-info">
-      <h5>🔍 Prediction Result:</h5>
+     {% if result.temperature is not none %}
+    <div class="result-card">
+      <h5 class="text-center mb-4">🔍 Prediction Result</h5>
       <ul class="list-unstyled">
+
         {% if result.mode == 'forward' %}
-          <li><strong>Temperature:</strong> {{ result.temperature }} °C</li>
-          <li><strong>Predicted Humidity:</strong> {{ result.humidity | round(2) }}%</li>
-          <li><strong>Predicted Wind Speed:</strong> {{ result.wind_speed | round(2) }} km/h</li>
-          <li><strong>Predicted Pressure:</strong> {{ result.pressure | round(2) }} hPa</li>
+          <li data-bs-toggle="tooltip" title="Air temperature you entered.">
+            🌡️ <strong>Temperature:</strong> {{ result.temperature }} °C
+            {% if result.temperature < 20 %}
+              🧊 Cold
+            {% elif result.temperature < 30 %}
+              🌤️ Warm
+            {% else %}
+              🔥Hot
+            {% endif %}
+          </li>
+
+          <li data-bs-toggle="tooltip" title="Humidity measures how much moisture is in the air.">
+            💧 <strong>Predicted Humidity:</strong> {{ result.humidity | round(2) }}%
+            {% if result.humidity < 30 %}
+              🌵 Dry
+            {% elif result.humidity < 60 %}
+              🌤️ Comfortable 
+            {% else %}
+              💦 Humid
+            {% endif %}
+          </li>
+
+          <li data-bs-toggle="tooltip" title="Wind speed indicates how fast air is moving.">
+            🌬️ <strong>Predicted Wind Speed:</strong> {{ result.wind_speed | round(2) }} km/h
+            {% if result.wind_speed < 5 %}
+              🍃 Calm
+            {% elif result.wind_speed < 15 %}
+              🌬️ Breezy
+            {% else %}
+              💨 Windy
+            {% endif %}
+          </li>
+
+          <li data-bs-toggle="tooltip" title="Atmospheric pressure, measured in hPa, can indicate upcoming weather.">
+            🧭 <strong>Predicted Pressure:</strong> {{ result.pressure | round(2) }} hPa
+            {% if result.pressure < 1000 %}
+              🌧️ Low Pressure (Rainy)
+            {% elif result.pressure < 1020 %}
+              ⛅ Normal Pressure (Fair)
+            {% else %}
+              ☀️ High Pressure (Clear)
+            {% endif %}
+          </li>
+
         {% elif result.mode == 'reverse' %}
-          <li><strong>Humidity:</strong> {{ result.humidity }}%</li>
-          <li><strong>Wind Speed:</strong> {{ result.wind_speed }} km/h</li>
-          <li><strong>Pressure:</strong> {{ result.pressure }} hPa</li>
-          <li><strong>Predicted Temperature:</strong> {{ result.temperature | round(2) }} °C</li>
-        {% endif %}
+          <li data-bs-toggle="tooltip" title="Humidity you entered or measured.">
+            💧 <strong>Humidity:</strong> {{ result.humidity }}%
+            {% if result.humidity < 30 %}
+              🌵 Dry
+            {% elif result.humidity < 60 %}
+              🌤️ Comfortable
+            {% else %}
+              💦 Humid
+            {% endif %}
+          </li>
+
+          <li data-bs-toggle="tooltip" title="Wind speed you entered or measured.">
+            🌬️ <strong>Wind Speed:</strong> {{ result.wind_speed }} km/h
+            {% if result.wind_speed < 5 %}
+              🍃 Calm
+            {% elif result.wind_speed < 15 %}
+              🌬️ Breezy
+            {% else %}
+              💨 Windy
+            {% endif %}
+          </li>
+
+          <li title="Air pressure you entered or measured.">
+            🧭 <strong>Pressure:</strong> {{ result.pressure }} hPa
+            {% if result.pressure < 1000 %}
+              🌧️ Low Pressure (Rainy)
+            {% elif result.pressure < 1020 %}
+              ⛅ Normal Pressure (Fair)
+            {% else %}
+              ☀️ High Pressure (Clear)
+           {% endif %}
+            </li>
+
+            <li title="Estimated temperature based on humidity, wind, and pressure.">
+           🌡️ <strong>Predicted Temperature:</strong> {{ result.temperature | round(2) }} °C
+            {% if result.temperature < 20 %}
+              🧊 Cool
+            {% elif result.temperature < 30 %}
+              🌤️ Warm
+            {% else %}
+              🔥 Hot
+            {% endif %}
+            </li>
+          {% endif %}
       </ul>
     </div>
     {% elif result.error %}
@@ -65,6 +145,13 @@
   </div>
 
   <script>
+
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
+    tooltipTriggerList.map(function (el) {
+      return new bootstrap.Tooltip(el)
+    })
+
+
     function toggleInputs() {
       const mode = document.getElementById('mode').value;
       document.getElementById('input-temp').style.display = (mode === 'forward') ? 'block' : 'none';
