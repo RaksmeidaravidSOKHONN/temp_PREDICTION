@@ -7,7 +7,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100vh;
 }
 
@@ -20,10 +20,11 @@ h1 {
   margin-bottom: 30px;
 }
 
+/* ===== FORM STYLING ===== */
 form {
   width: 100%;
   max-width: 620px;
-  margin-left: 250px;
+  margin: 30px auto;
   background-color: #366dc5;
   border-radius: 16px;
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
@@ -66,34 +67,51 @@ button[type="submit"]:hover {
   transform: scale(1.02);
 }
 
+/* ===== RESULT CARD ===== */
 .result-card {
   background: linear-gradient(to right, #59fef3, #6aafff);
-  border-left: 6px solid #3498db;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
   width: 100%;
-  max-width: 750px;
+  max-width: 800px;
   margin: 30px auto;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.result-card h5 {
-  font-size: 1.4rem;
-  margin-bottom: 16px;
-  color: #0c2e60;
-}
-
-.result-card ul li {
-  font-size: 1.15rem;
-  margin-bottom: 10px;
-  color: #1e3a8a;
-}
-
-.result-card ul li strong {
+  animation: fadeIn 0.6s ease-in-out;
   color: #0f172a;
 }
 
+.result-card h4 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #0c2e60;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.result-card .row > div {
+  margin-bottom: 15px;
+}
+
+.result-card span {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.result-card p {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* custom icon colors */
+.text-secondary { color: #6c757d !important; }
+.text-info { color: #069fbe !important; }
+.text-primary { color: #0d6efd !important; }
+.text-warning { color: #614a05 !important; }
+.text-danger { color: #dc3545 !important; }
+
+/* Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -102,5 +120,30 @@ button[type="submit"]:hover {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .result-card {
+    padding: 20px;
+  }
+
+  .result-card h4 {
+    font-size: 1.5rem;
+  }
+
+  .result-card p {
+    font-size: 1.1rem;
+  }
+
+  form {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
