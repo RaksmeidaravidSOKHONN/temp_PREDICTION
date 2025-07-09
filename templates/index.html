@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="container mt-5">
-    <h1 class="text-center mb-4">🌤️ Temperature Prediction Web</h1>
+    <h1 class="text-center mb-4">🌤️ The Atmospheric Prediction Web</h1>
 
     <form method="POST">
       <div class="mb-3">
@@ -57,11 +57,10 @@
 
     {% if result.temperature is not none %}
     <div class="result-card shadow-lg mt-5 rounded-4">
-      <h4 class="text-center mb-4">🔍 <strong>Prediction Result</strong></h4>
+      <h4 class="text-center mb-4">🔍 <strong>Predicted Result</strong></h4>
       <div class="row text-center">
 
           {% if result.mode == 'forward' %}
-
             <div class="col-md-6 offset-md-3 mb-4">
               <span class="fw-bold text-secondary">🌡️ Temperature:</span>
               <p class="fs-5">{{ result.temperature }} °C</p>
@@ -112,7 +111,7 @@
   }
 
   function updateDateFeatures() {
-    const dateStr = document.getElementById('date').value=today;
+    const dateStr = document.getElementById('date').value;
     if (!dateStr) return;
 
     const date = new Date(dateStr);
@@ -128,15 +127,8 @@
     document.getElementById('season').value = season;
   }
 
-  function prefillToday() {
-    const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-    document.getElementById('date').value = today;
-    updateDateFeatures(); // Fill derived fields right away
-  }
-
   // Initialize on page load
   window.onload = function () {
-    prefillToday();
     toggleInputs();
   };
 </script>

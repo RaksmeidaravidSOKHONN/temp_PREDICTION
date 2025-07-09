@@ -14,7 +14,7 @@ df = df[df['pressure'].between(900, 1100)]
 df['date'] = pd.to_datetime(df['date'])
 df['month'] = df['date'].dt.month
 df['day_of_year'] = df['date'].dt.dayofyear
-df['season'] = df['month'] % 12 // 3 + 1  # 1=Winter, 2=Spring, 3=Summer, 4=Fall
+df['season'] = df['month'] % 12 // 3 + 1  
 df.drop(columns=['date'], inplace=True)
 
 # ------------------ Split Dataset ------------------ #

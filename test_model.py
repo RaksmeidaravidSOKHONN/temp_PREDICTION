@@ -38,7 +38,7 @@ pred_pressure = model_A3.predict(X_test_A)
 # Stack predictions
 preds_A = np.column_stack([pred_humidity, pred_wind, pred_pressure])
 
-# Evaluate
+# Model A Evaluation 
 mse_A = mean_squared_error(y_test_A, preds_A)
 rmse_A = np.sqrt(mse_A)
 mae_A = mean_absolute_error(y_test_A, preds_A)
@@ -58,7 +58,7 @@ y_test_B = test_data['temperature']
 model_B = joblib.load("model_hwp_to_temp.pkl")
 preds_B = model_B.predict(X_test_B)
 
-# Evaluate
+# Model B Evaluation
 mse_B = mean_squared_error(y_test_B, preds_B)
 rmse_B = np.sqrt(mse_B)
 mae_B = mean_absolute_error(y_test_B, preds_B)
